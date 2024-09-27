@@ -49,8 +49,8 @@
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
+    displayManager.sddm.enable = true;
+    desktopManager.plasma6.enable = true;
     # Configure keymap in X11
     xkb = {
       layout = "us";
@@ -62,6 +62,7 @@
   # services.printing.enable = true;
 
   # Audio configuration
+    hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -120,15 +121,13 @@
     zip
     # Fonts
     cantarell-fonts
-    fira-code
-    iosevka
-    jetbrains-mono
-    maple-mono
-    maple-mono-NF
+    # fira-code
+    # jetbrains-mono
+    # maple-mono
+    # maple-mono-NF
     mononoki
     nerdfonts
     noto-fonts
-    roboto
     twitter-color-emoji
   ];
 
