@@ -10,11 +10,25 @@ command_exists() {
 # Function to install a package using pacman or AUR helper
 install_package() {
     local package=$1
+    package=$(echo "$package" | xargs) # Trim whitespace
+    if [[ ! "$package" =~ ^[a-zA-Z0-9._+-]+$ ]]; then
+        echo "Invalid package name: $package. Skipping."
+        return 1
+    fi
     if pacman -Si "$package" >/dev/null 2>&1; then
-        sudo pacman -S --needed --noconfirm "$package" || return 1
+        if ! sudo pacman -S --needed --noconfirm "$package"; then
+            echo "Error: Failed to install $package from the official repo." >&2
+            echo "$package" >> "$failed_packages"
+            return 1
+        fi
     elif [[ -n $aur_helper ]] && $aur_helper -Si "$package" >/dev/null 2>&1; then
-        $aur_helper -S --needed --noconfirm "$package" || return 1
+        if ! $aur_helper -S --needed --noconfirm "$package"; then
+            echo "Error: Failed to install $package via AUR helper ($aur_helper)." >&2
+            echo "$package" >> "$failed_packages"
+            return 1
+        fi
     else
+        echo "Error: $package not found in the official repos or AUR." >&2
         echo "$package" >> "$failed_packages"
         return 1
     fi
@@ -30,6 +44,12 @@ fi
 # Check for sudo privileges
 if ! sudo -v; then
     echo "This script requires sudo privileges. Please ensure you have sudo access."
+    exit 1
+fi
+
+# Check for internet connection
+if ! ping -c 1 archlinux.org &> /dev/null; then
+    echo "Error: No active internet connection. Exiting."
     exit 1
 fi
 
@@ -57,7 +77,11 @@ fi
 # Process each input file
 for file in "$@"; do
     if [[ ! -f "$file" ]]; then
-        echo "Error: File $file not found. Skipping."
+        echo "Error: File $file not found or not readable. Skipping." >&2
+        continue
+    fi
+    if [[ $(wc -l < "$file") -eq 0 ]]; then
+        echo "Warning: File $file is empty. No packages to install." >&2
         continue
     fi
 
