@@ -1,0 +1,64 @@
+## Official Repo
+
+hyprland
+swww
+waybar
+hyprlock
+hypridle
+mako
+rofi
+polkit-kde-agent
+network-manager-applet
+grim
+slurp
+hyprpicker
+kitty
+yazi
+fish
+fastfetch
+bat
+htop
+lightly-qt
+nwg-look
+dconf-editor
+qt5ct
+qt6ct
+kvantum
+jamesdsp
+asusctltray-git
+zathura
+pcmanfm
+telegram-desktop
+neovim
+aria2
+proxychains-ng
+cmatrix
+github-cli
+# signal-desktop
+vulkan-radeon
+flatpak
+unrar
+unzip
+zip
+wlsunset
+nodejs
+npm
+xdg-user-dirs
+vulkan-radeon
+
+## AUR
+
+pyprland
+waypaper
+catppuccin-gtk-theme-mocha
+numix-circle-icon-theme-git
+cava
+zen-browser-bin
+spotify
+obs-studio-git
+# upscayl-bin
+ttf-maple
+spicetify-cli
+
+
+# pacman -Ql noise-suppression-for-voice
